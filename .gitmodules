@@ -1,0 +1,3 @@
+[submodule "winterfell-secrets"]
+	path = winterfell-secrets
+	url = https://github.com/rajrajhans/winterfell-secrets
