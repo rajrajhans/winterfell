@@ -1,0 +1,5 @@
+{
+  "AccountTag": "secret",
+  "TunnelSecret": "secret",
+  "TunnelID": "your-tunnel-uuid"
+}

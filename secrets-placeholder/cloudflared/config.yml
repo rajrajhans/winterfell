@@ -1,0 +1,9 @@
+tunnel: your-tunnel-uuid
+credentials-file: ~/.cloudflared/your-tunnel-uuid.json
+
+ingress:
+  - hostname: winterfell.rajrajhans.com
+    service: http://winterfell.local
+  - hostname: test-winterfell.rajrajhans.com
+    service: http://winterfell.local
+  - service: http_status:404
