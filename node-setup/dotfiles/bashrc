@@ -56,6 +56,6 @@ alias egrep='egrep --color=auto'
 alias ls='ls -a --color=auto'
 alias ll='ls -alF'
 alias la='ls -A'
-alias l='ls -CF'
+alias l='ll'
 alias realtimeutc='while true; do printf "%s\r" "$(date -u)"; done'
 alias checkip="curl ipinfo.io/ip"
