@@ -16,10 +16,14 @@ case "$TERM" in
 xterm-color | *-256color) color_prompt=yes ;;
 esac
 
+# turn on autocd
+shopt -s autocd
+
 #### ALIASES ####
 # git related aliases
 alias g='git'
 alias lg='lazygit'
+alias gaa='git add --all'
 alias gc='git commit -m'
 alias gcl='git clone'
 alias gs='git status'
