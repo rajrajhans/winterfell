@@ -1,0 +1,57 @@
+# don't put duplicate lines or lines starting with space in the history.
+HISTCONTROL=ignoreboth
+
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=1000
+HISTFILESIZE=2000
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+# set a fancy prompt (non-color, unless we know we "want" color)
+case "$TERM" in
+xterm-color | *-256color) color_prompt=yes ;;
+esac
+
+#### ALIASES ####
+# git related aliases
+alias g='git'
+alias lg='lazygit'
+alias gc='git commit -m'
+alias gcl='git clone'
+alias gs='git status'
+alias gsv='git status -v'
+alias gm='git merge'
+alias gd='git diff'
+alias gco='git checkout'
+alias gcob='git checkout -b'
+alias g-current-branch='git rev-parse --abbrev-ref HEAD'
+alias gpo='git push origin'
+alias gpoc='git push origin $(g-current-branch)' # Push the current branch to the remote "origin"
+alias gplo='git pull origin'
+alias gploc='git pull origin $(g-current-branch)'
+alias gstsh='git stash'
+alias gpop='git stash pop'
+alias gdeepclean='git clean -fdx'
+alias ghpr='gh pr view --web' # Open current branch's PR on github
+alias gresh='git reset --hard'
+alias gupdate='git checkout main && git pull origin main && git checkout - && git merge main'
+
+gundo() {
+    git reset HEAD~$1
+}
+
+# some handy aliases
+alias cls='clear'
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+alias ls='ls -a --color=auto'
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+alias realtimeutc='while true; do printf "%s\r" "$(date -u)"; done'
+alias checkip="curl ipinfo.io/ip"
