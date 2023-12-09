@@ -2,9 +2,10 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: winterfell-ingress
+  namespace: winterfell-infra
   annotations:
     kubernetes.io/ingress.class: traefik
-    traefik.ingress.kubernetes.io/router.middlewares: default-mw-traefik@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: winterfell-infra-mw-traefik@kubernetescrd
 spec:
   rules:
   - http:
