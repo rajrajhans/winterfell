@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: winterfell-ingress
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/router.middlewares: default-mw-traefik@kubernetescrd
+spec:
+  rules:
+  - http:
+      paths:
+      - pathType: Prefix
+        path: /ping
+        backend:
+          service:
+            name: winterfell-ping
+            port:
+              number: 80
