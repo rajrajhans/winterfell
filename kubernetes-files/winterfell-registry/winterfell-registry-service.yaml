@@ -8,6 +8,8 @@ metadata:
 spec:
   selector:
     app: docker-registry
+  type: NodePort
   ports:
     - protocol: TCP
       port: 5000
+      nodePort: 35000
