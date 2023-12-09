@@ -64,3 +64,9 @@ alias la='ls -A'
 alias l='ll'
 alias realtimeutc='while true; do printf "%s\r" "$(date -u)"; done'
 alias checkip="curl ipinfo.io/ip"
+
+# kubectl aliases
+alias kc='kubectl'
+alias kca='kubectl --all-namespaces'
+alias kcg='kubectl get'
+alias kcga='kubectl get --all-namespaces'
