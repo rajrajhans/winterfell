@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: winterfell-ping
-          image: winterfell.local:5000/winterfell-ping
+          image: winterfell.local:30500/winterfell-ping
           ports:
             - containerPort: 3000
               protocol: TCP
