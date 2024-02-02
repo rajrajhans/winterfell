@@ -8,12 +8,12 @@ metadata:
     traefik.ingress.kubernetes.io/router.middlewares: winterfell-infra-mw-traefik@kubernetescrd
 spec:
   rules:
-  - http:
-      paths:
-      - pathType: Prefix
-        path: /ping
-        backend:
-          service:
-            name: winterfell-ping
-            port:
-              number: 80
+    - http:
+        paths:
+          - pathType: Prefix
+            path: /ping
+            backend:
+              service:
+                name: winterfell-ping
+                port:
+                  number: 80
