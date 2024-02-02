@@ -153,6 +153,17 @@ fi
 # add a hosts entry for winterfell.local to point to the k8s ingress
 echo "$KUBERNETES_INGRESS_IP winterfell.local" | tee -a /etc/hosts
 
+private_registry_config="mirrors:
+  \"winterfell.local:30500\":
+    endpoint:
+      - \"http://winterfell.local:30500\"
+"
+
+echo "⏳⏳ Configuring containerd to use private registry"
+mkdir -p /etc/rancher/k3s
+touch /etc/rancher/k3s/registries.yaml
+echo "$private_registry_config" | sudo tee /etc/rancher/k3s/registries.yaml
+
 echo "🟢🟢 All done! Rebooting"
 
 reboot
