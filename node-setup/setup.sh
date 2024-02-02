@@ -79,6 +79,12 @@ apt-get install -y \
     git \
     net-tools
 
+echo "⏳⏳ Installing tldr"
+apt-get install -y tldr
+
+echo "⏳⏳ Updating tldr cache"
+tldr -u
+
 if [ "$INSTALL_RPI_LINUX_MODULES" == "true" ]; then
     echo "⏳⏳ Installing Raspberry Pi Linux modules"
     apt-get install -y linux-modules-extra-raspi
