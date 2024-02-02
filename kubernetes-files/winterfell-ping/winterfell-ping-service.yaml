@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: winterfell-ping-service
+  namespace: winterfell-ping
+  labels:
+    run: winterfell-ping
+spec:
+  selector:
+    app: winterfell-ping
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 3000
