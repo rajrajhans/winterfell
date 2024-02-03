@@ -12,6 +12,12 @@ echo "✅ Cloudflared secrets setup"
 
 echo "⏳⏳ Configuring cloudflared service"
 sudo cloudflared --config /home/ghost/winterfell/winterfell-secrets/cloudflared/config.yml service install
+systemctl stop cloudflared
+systemctl disable cloudflared
+rm /etc/systemd/system/cloudflared.service
+cp ./configs/cloudflared.service /etc/systemd/system/cloudflared.service
+systemctl daemon-reload
+systemctl enable cloudflared
 systemctl start cloudflared
 echo "✅ Cloudflared service configured"
 
