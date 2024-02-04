@@ -203,7 +203,6 @@ spec:
             - --port=8444 # By default, https uses 8443 so we move it away to something else
             - --insecure-port=8443 # The chart has 8443 hard coded as a containerPort in the deployment spec so we must use this internally for the http service
             - --insecure-bind-address=0.0.0.0
-            - --auto-generate-certificates
             - --namespace=kubernetes-dashboard
             # Uncomment the following line to manually specify Kubernetes API server Host
             # If not specified, Dashboard will attempt to auto discover the API server and connect
