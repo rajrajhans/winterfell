@@ -38,7 +38,7 @@ spec:
   type: NodePort
   ports:
     - protocol: TCP
-      port: 443
+      port: 8443
       nodePort: 30001
   selector:
     k8s-app: kubernetes-dashboard
