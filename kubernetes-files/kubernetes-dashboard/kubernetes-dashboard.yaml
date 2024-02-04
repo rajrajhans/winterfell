@@ -218,7 +218,7 @@ spec:
             httpGet:
               scheme: HTTP
               path: /
-              port: 8444
+              port: 8443
             initialDelaySeconds: 30
             timeoutSeconds: 30
           securityContext:
