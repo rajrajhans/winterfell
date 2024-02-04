@@ -70,3 +70,5 @@ alias kc='kubectl'
 alias kcg='kubectl get'
 alias kcga='kubectl get --all-namespaces'
 alias kcapply='kubectl apply -f'
+
+source /etc/profile.d/bash_completion.sh

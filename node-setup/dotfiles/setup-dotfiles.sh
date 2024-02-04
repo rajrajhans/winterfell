@@ -6,7 +6,8 @@
 declare -a FILES_TO_SYMLINK=(
     'bashrc'
     'gitconfig'
-    'gitignore'
+    'gitignore',
+    'inputrc'
 )
 
 execute() {
