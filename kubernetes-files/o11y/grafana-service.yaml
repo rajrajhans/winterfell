@@ -4,11 +4,12 @@ metadata:
   name: grafana
   namespace: winterfell-o11y
 spec:
+  type: NodePort
   ports:
     - port: 3000
+      nodePort: 30002
       protocol: TCP
       targetPort: http-grafana
   selector:
     app: grafana
   sessionAffinity: None
-  type: LoadBalancer
