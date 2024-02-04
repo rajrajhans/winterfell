@@ -38,7 +38,7 @@ spec:
   type: NodePort
   ports:
     - protocol: TCP
-      port: 8443
+      port: 8444
       nodePort: 30001
   selector:
     k8s-app: kubernetes-dashboard
@@ -196,7 +196,7 @@ spec:
           image: kubernetesui/dashboard:v2.7.0
           imagePullPolicy: Always
           ports:
-            - containerPort: 8443
+            - containerPort: 8444
               protocol: TCP
           args:
             - --enable-insecure-login
@@ -217,9 +217,9 @@ spec:
               name: tmp-volume
           livenessProbe:
             httpGet:
-              scheme: HTTPS
+              scheme: HTTP
               path: /
-              port: 8443
+              port: 8444
             initialDelaySeconds: 30
             timeoutSeconds: 30
           securityContext:
