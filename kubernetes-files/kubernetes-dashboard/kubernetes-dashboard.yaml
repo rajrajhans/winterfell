@@ -199,7 +199,7 @@ spec:
             - containerPort: 8443
               protocol: TCP
           args:
-            - --enable-insecure-login true
+            - --enable-insecure-login
             - --port=8444 # By default, https uses 8443 so we move it away to something else
             - --insecure-port=8443 # The chart has 8443 hard coded as a containerPort in the deployment spec so we must use this internally for the http service
             - --insecure-bind-address=0.0.0.0
