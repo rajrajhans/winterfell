@@ -75,6 +75,14 @@ k3d_apply() {
   echo "🔷 Creating ingress rules..."
   apply_matching_files "*ingress.yaml"
 
+  # create dashboard token
+  echo "🔷 Creating dashboard token..."
+  token=$(kubectl -n kubernetes-dashboard create token admin-user)
+  echo "🔵 Dashboard token (also saved to tmp/k3d-k8s-dashboard.token):"
+  echo "$token"
+  mkdir -p tmp
+  echo "$token" >tmp/k3d-k8s-dashboard.token
+
   echo "✨ All kubernetes resources have been applied!"
 }
 
