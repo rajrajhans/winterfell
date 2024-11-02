@@ -20,7 +20,7 @@ create_k3d_cluster() {
 # applies files matching the pattern in the kubernetes-files directory
 apply_matching_files() {
   local pattern=$1
-  find "./kubernetes-files" -type f -name "$pattern" | sort | while read -r file; do
+  find "./kubernetes-files" -type f -wholename "*$pattern" | sort | while read -r file; do
     echo "Applying $file..."
     kubectl apply -f "$file"
 
@@ -38,51 +38,63 @@ apply_matching_files() {
 }
 
 k8s_apply() {
-  kubectl apply -f https://raw.githubusercontent.com/traefik/traefik/v2.10/docs/content/reference/dynamic-configuration/kubernetes-crd-definition-v1.yml
+  local prefix=$1
+  local search_base=""
+
+  if [ -n "$prefix" ]; then
+    search_base="$prefix/"
+  fi
+
+  # only apply Traefik CRD if no prefix specified
+  if [ -z "$prefix" ]; then
+    kubectl apply -f https://raw.githubusercontent.com/traefik/traefik/v2.10/docs/content/reference/dynamic-configuration/kubernetes-crd-definition-v1.yml
+  fi
 
   # first, create all namespaces
   echo "🔷 Creating namespaces..."
-  apply_matching_files "*namespace.yaml"
+  apply_matching_files "${search_base}*namespace.yaml"
 
   # then create PVCs
   echo "🔷 Creating PVCs..."
-  apply_matching_files "*pvc.yaml"
+  apply_matching_files "${search_base}*pvc.yaml"
 
   # create secrets and config maps
   echo "🔷 Creating secrets and configmaps..."
-  apply_matching_files "*secret.yaml"
-  apply_matching_files "*configmap.yaml"
+  apply_matching_files "${search_base}*secret.yaml"
+  apply_matching_files "${search_base}*configmap.yaml"
 
   # create service accounts and RBAC resources
   echo "🔷 Creating RBAC resources..."
-  apply_matching_files "*serviceaccount.yaml"
-  apply_matching_files "*role*.yaml"
-  apply_matching_files "*cluster-role*.yaml"
-  apply_matching_files "*rbac*.yaml"
+  apply_matching_files "${search_base}*serviceaccount.yaml"
+  apply_matching_files "${search_base}*role*.yaml"
+  apply_matching_files "${search_base}*cluster-role*.yaml"
+  apply_matching_files "${search_base}*rbac*.yaml"
 
   # create services
   echo "🔷 Creating services..."
-  apply_matching_files "*service.yaml"
+  apply_matching_files "${search_base}*service.yaml"
 
   # create middleware (Traefik)
   echo "🔷 Creating middleware..."
-  apply_matching_files "*middleware.yaml"
+  apply_matching_files "${search_base}*middleware.yaml"
 
   # create deployments
   echo "🔷 Creating deployments..."
-  apply_matching_files "*deployment.yaml"
+  apply_matching_files "${search_base}*deployment.yaml"
 
   # finally, create ingress rules
   echo "🔷 Creating ingress rules..."
-  apply_matching_files "*ingress.yaml"
+  apply_matching_files "${search_base}*ingress.yaml"
 
-  # create dashboard token
-  echo "🔷 Creating dashboard token..."
-  token=$(kubectl -n kubernetes-dashboard create token admin-user)
-  echo "🔵 Dashboard token (also saved to tmp/k3d-k8s-dashboard.token):"
-  echo "$token"
-  mkdir -p tmp
-  echo "$token" >tmp/k3d-k8s-dashboard.token
+  # only create dashboard token if no prefix specified
+  if [ -z "$prefix" ]; then
+    echo "🔷 Creating dashboard token..."
+    token=$(kubectl -n kubernetes-dashboard create token admin-user)
+    echo "🔵 Dashboard token (also saved to tmp/k3d-k8s-dashboard.token):"
+    echo "$token"
+    mkdir -p tmp
+    echo "$token" >tmp/k3d-k8s-dashboard.token
+  fi
 
   echo "✨ All kubernetes resources have been applied!"
 }
