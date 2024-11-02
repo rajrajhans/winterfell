@@ -49,3 +49,13 @@ data:
           regex: ([^:]+)(?::\d+)?;(\d+)
           replacement: $1:$2
           target_label: __address__
+
+      - job_name: 'node-exporter'
+        kubernetes_sd_configs:
+        - role: endpoints
+        relabel_configs:
+        - source_labels: [__meta_kubernetes_service_label_app]
+          regex: node-exporter
+          action: keep
+        - action: labelmap
+          regex: __meta_kubernetes_service_label_(.+)
