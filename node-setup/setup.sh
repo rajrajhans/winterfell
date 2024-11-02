@@ -14,12 +14,20 @@ source ./setup.env
 # validate envs
 env_vars=("WIFI_SSID" "WIFI_PWD" "DOTFILES_GIT_REPO" "TAILSCALE_AUTH_KEY" "KUBERNETES_NODE_ROLE" "KUBERNETES_MASTER_URL" "KUBERNETES_CLUSTER_TOKEN")
 
+missing_vars=()
 for var in "${env_vars[@]}"; do
     if [ -z "${!var}" ]; then
-        echo "Environment variable $var is not set"
-        exit 1
+        missing_vars+=("$var")
     fi
 done
+
+if [ ${#missing_vars[@]} -gt 0 ]; then
+    echo "❌ The following environment variables are not set:"
+    for var in "${missing_vars[@]}"; do
+        echo "  - $var"
+    done
+    exit 1
+fi
 
 ## connect to wifi
 if [ "$SETUP_WIFI" == "true" ]; then
