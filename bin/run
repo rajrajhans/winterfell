@@ -17,9 +17,65 @@ create_k3d_cluster() {
     --agents 2
 }
 
+# applies files matching the pattern in the kubernetes-files directory
+apply_matching_files() {
+  local pattern=$1
+  find "./kubernetes-files" -type f -name "$pattern" | sort | while read -r file; do
+    echo "Applying $file..."
+    kubectl apply -f "$file"
+
+    # check if the apply was successful
+    if [ $? -eq 0 ]; then
+      echo "✅ Successfully applied $file"
+    else
+      echo "❌ Failed to apply $file"
+      exit 1
+    fi
+
+    # wait a bit to ensure resources are created
+    sleep 2
+  done
+}
+
 k3d_apply() {
   kubectl apply -f https://raw.githubusercontent.com/traefik/traefik/v2.10/docs/content/reference/dynamic-configuration/kubernetes-crd-definition-v1.yml
-  kubectl apply -f kubernetes-files/
+
+  # first, create all namespaces
+  echo "🔷 Creating namespaces..."
+  apply_matching_files "*namespace.yaml"
+
+  # then create PVCs
+  echo "🔷 Creating PVCs..."
+  apply_matching_files "*pvc.yaml"
+
+  # create secrets and config maps
+  echo "🔷 Creating secrets and configmaps..."
+  apply_matching_files "*secret.yaml"
+  apply_matching_files "*configmap.yaml"
+
+  # create service accounts and RBAC resources
+  echo "🔷 Creating RBAC resources..."
+  apply_matching_files "*serviceaccount.yaml"
+  apply_matching_files "*role*.yaml"
+  apply_matching_files "*cluster-role*.yaml"
+
+  # create services
+  echo "🔷 Creating services..."
+  apply_matching_files "*service.yaml"
+
+  # create middleware (Traefik)
+  echo "🔷 Creating middleware..."
+  apply_matching_files "*middleware.yaml"
+
+  # create deployments
+  echo "🔷 Creating deployments..."
+  apply_matching_files "*deployment.yaml"
+
+  # finally, create ingress rules
+  echo "🔷 Creating ingress rules..."
+  apply_matching_files "*ingress.yaml"
+
+  echo "✨ All kubernetes resources have been applied!"
 }
 
 destroy_k3d_cluster() {
