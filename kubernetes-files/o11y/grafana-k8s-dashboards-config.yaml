@@ -94,7 +94,7 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus_datasource"
               },
-              "expr": "sum(rate(container_cpu_usage_seconds_total{container!=\"\"}[5m])) by (container) * 100",
+              "expr": "100 - (avg by (instance) (irate(node_cpu_seconds_total{mode=\"idle\"}[5m])) * 100)",
               "refId": "A"
             }
           ],
@@ -180,7 +180,7 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus_datasource"
               },
-              "expr": "sum(container_memory_usage_bytes{container!=\"\"}) by (container)",
+              "expr": "node_memory_MemTotal_bytes - node_memory_MemFree_bytes - node_memory_Buffers_bytes - node_memory_Cached_bytes",
               "refId": "A"
             }
           ],
