@@ -58,6 +58,7 @@ k8s_apply() {
   apply_matching_files "*serviceaccount.yaml"
   apply_matching_files "*role*.yaml"
   apply_matching_files "*cluster-role*.yaml"
+  apply_matching_files "*rbac*.yaml"
 
   # create services
   echo "🔷 Creating services..."
