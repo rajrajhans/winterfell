@@ -17,6 +17,11 @@ create_k3d_cluster() {
     --agents 2
 }
 
+k3d_apply() {
+  kubectl apply -f https://raw.githubusercontent.com/traefik/traefik/v2.10/docs/content/reference/dynamic-configuration/kubernetes-crd-definition-v1.yml
+  kubectl apply -f kubernetes-files/
+}
+
 destroy_k3d_cluster() {
   k3d cluster delete winterfell
 }
@@ -31,7 +36,7 @@ run() {
   if fn_exists $fn; then
     $fn ${@}
   else
-    with_dev_env
+    # with_dev_env
     eval $cmd "${@}"
   fi
 }
