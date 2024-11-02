@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: promtail
+  namespace: winterfell-o11y
+spec:
+  selector:
+    matchLabels:
+      app: promtail
+  template:
+    metadata:
+      labels:
+        app: promtail
+    spec:
+      serviceAccount: promtail
+      containers:
+        - name: promtail
+          image: grafana/promtail:2.9.0
+          args:
+            - -config.file=/etc/promtail/promtail.yaml
+          volumeMounts:
+            - name: config
+              mountPath: /etc/promtail
+            - name: run
+              mountPath: /run/promtail
+            - name: containers
+              mountPath: /var/lib/docker/containers
+              readOnly: true
+            - name: pods
+              mountPath: /var/log/pods
+              readOnly: true
+          env:
+            - name: HOSTNAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+          resources:
+            requests:
+              cpu: 50m
+              memory: 32Mi
+            limits:
+              cpu: 100m
+              memory: 128Mi
+      volumes:
+        - name: config
+          configMap:
+            name: promtail-config
+        - name: run
+          hostPath:
+            path: /run/promtail
+        - name: containers
+          hostPath:
+            path: /var/lib/docker/containers
+        - name: pods
+          hostPath:
+            path: /var/log/pods

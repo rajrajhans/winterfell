@@ -72,4 +72,4 @@ spec:
             name: grafana-dashboards-config
         - name: dashboards-data
           configMap:
-            name: grafana-dashboards
+            name: grafana-k8s-dashboards
