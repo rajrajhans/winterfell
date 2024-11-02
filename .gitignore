@@ -1,3 +1,4 @@
 winterfell-secrets/
 .DS_Store
 node-setup/setup.env
+.direnv/

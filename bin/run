@@ -1,0 +1,27 @@
+#!/bin/bash
+
+run_init() {
+  direnv allow
+}
+
+say_hi() {
+  # for testing
+  echo "👋 Hi!"
+}
+
+fn_exists() { declare -F "$1" >/dev/null; }
+
+run() {
+  local cmd=$1
+  shift
+  local fn="run_$cmd"
+
+  if fn_exists $fn; then
+    $fn ${@}
+  else
+    with_dev_env
+    eval $cmd "${@}"
+  fi
+}
+
+run ${@}
