@@ -9,6 +9,18 @@ say_hi() {
   echo "👋 Hi!"
 }
 
+create_k3d_cluster() {
+  k3d cluster create winterfell \
+    --api-port 6550 \
+    -p "80:80@loadbalancer" \
+    -p "443:443@loadbalancer" \
+    --agents 2
+}
+
+destroy_k3d_cluster() {
+  k3d cluster delete winterfell
+}
+
 fn_exists() { declare -F "$1" >/dev/null; }
 
 run() {

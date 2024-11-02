@@ -23,6 +23,7 @@
           pkgs.openssl
           pkgs.flyctl
           pkgs.beam.packages.erlang_27.elixir_1_17
+          pkgs.k3d
         ];
 
         dev =
