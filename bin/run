@@ -79,6 +79,10 @@ k8s_apply() {
   echo "🔷 Creating middleware..."
   apply_matching_files "${search_base}*middleware.yaml"
 
+  # create daemonsets
+  echo "🔷 Creating daemonsets..."
+  apply_matching_files "${search_base}*daemonset.yaml"
+
   # create deployments
   echo "🔷 Creating deployments..."
   apply_matching_files "${search_base}*deployment.yaml"
