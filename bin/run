@@ -62,6 +62,7 @@ k8s_apply() {
   echo "🔷 Creating secrets and configmaps..."
   apply_matching_files "${search_base}*secret.yaml"
   apply_matching_files "${search_base}*configmap.yaml"
+  apply_matching_files "${search_base}*config*.yaml"
 
   # create service accounts and RBAC resources
   echo "🔷 Creating RBAC resources..."
