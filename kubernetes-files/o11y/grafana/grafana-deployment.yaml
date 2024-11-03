@@ -72,6 +72,10 @@ spec:
               name: k8s-views-namespaces
             - mountPath: /var/lib/grafana/dashboards/k8s-views-pods
               name: k8s-views-pods
+            - mountPath: /var/lib/grafana/dashboards/k8s-views-global
+              name: k8s-views-global
+            - mountPath: /var/lib/grafana/dashboards/k8s-views-nodes
+              name: k8s-views-nodes
       volumes:
         - name: grafana-pv
           persistentVolumeClaim:
@@ -103,3 +107,9 @@ spec:
         - name: k8s-views-pods
           configMap:
             name: dashboards-k8s-views-pods
+        - name: k8s-views-global
+          configMap:
+            name: dashboards-k8s-views-global
+        - name: k8s-views-nodes
+          configMap:
+            name: dashboards-k8s-views-nodes
