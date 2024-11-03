@@ -117,6 +117,10 @@ data:
           regex: (.+)
           target_label: __metrics_path__
           replacement: /api/v1/nodes/${1}/proxy/metrics/cadvisor
+        - source_labels: [__meta_kubernetes_node_name]
+          regex: (.+)
+          target_label: node
+          replacement: ${1}
         - target_label: cluster
           replacement: winterfell
 
