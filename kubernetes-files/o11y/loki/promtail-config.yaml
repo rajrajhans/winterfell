@@ -19,10 +19,15 @@ data:
         pipeline_stages:
           - cri: {}
         relabel_configs:
+          # Extract app name from pod labels
           - source_labels:
+              - __meta_kubernetes_pod_label_app_kubernetes_io_name
               - __meta_kubernetes_pod_label_app
-            target_label: app
+              - __meta_kubernetes_pod_name
+            regex: ^;*([^;]+)(;.*)?$
             action: replace
+            target_label: app
+          # Standard labels
           - source_labels:
               - __meta_kubernetes_pod_container_name
             target_label: container
@@ -37,16 +42,26 @@ data:
             action: replace
           - source_labels:
               - __meta_kubernetes_pod_node_name
-            target_label: node
+            target_label: node_name
             action: replace
-          - target_label: __path__
+          # Fix the path to match CRI log format
+          - source_labels:
+              - __meta_kubernetes_pod_uid
+              - __meta_kubernetes_pod_container_name
+            target_label: __path__
+            action: replace
+            separator: /
             replacement: /var/log/pods/*$1/*.log
-          - action: labelmap
-            regex: __meta_kubernetes_pod_label_(.+)
+          # Handle pods with config hash annotations
           - action: replace
-            replacement: $1
+            replacement: /var/log/pods/*$1/*.log
+            regex: true/(.*)
             separator: /
             source_labels:
-              - __meta_kubernetes_namespace
-              - __meta_kubernetes_pod_name
-            target_label: job
+              - __meta_kubernetes_pod_annotationpresent_kubernetes_io_config_hash
+              - __meta_kubernetes_pod_annotation_kubernetes_io_config_hash
+              - __meta_kubernetes_pod_container_name
+            target_label: __path__
+          # Map all the other Kubernetes labels
+          - action: labelmap
+            regex: __meta_kubernetes_pod_label_(.+)

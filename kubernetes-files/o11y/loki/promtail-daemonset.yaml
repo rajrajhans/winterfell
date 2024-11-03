@@ -18,7 +18,6 @@ spec:
           image: grafana/promtail:2.9.0
           args:
             - -config.file=/etc/promtail/promtail.yaml
-            - -log.level=debug
           volumeMounts:
             - name: config
               mountPath: /etc/promtail
