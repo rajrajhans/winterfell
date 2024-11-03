@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: kube-state-metrics
   namespace: winterfell-o11y
+  labels:
+    app.kubernetes.io/name: kube-state-metrics
 spec:
   selector:
     matchLabels:
