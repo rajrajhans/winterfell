@@ -104,6 +104,15 @@ k8s_apply() {
   echo "✨ All kubernetes resources have been applied!"
 }
 
+restart_prometheus() {
+  # restarting it directly would lead to crash loop backoff with error `opening storage failed: lock DB directory: resource temporarily unavailable`, so we've to re-create the pvc
+  timeout 3 kubectl delete pvc prometheus-pvc -n winterfell-o11y || true
+  sleep 3
+  kubectl patch pvc prometheus-pvc -p '{"metadata":{"finalizers":null}}' -n winterfell-o11y
+  kubectl apply -f kubernetes-files/o11y/prometheus/prometheus-pvc.yaml
+  kubectl rollout restart deployment prometheus -n winterfell-o11y
+}
+
 destroy_k3d_cluster() {
   k3d cluster delete winterfell
 }
