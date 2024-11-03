@@ -113,6 +113,14 @@ restart_prometheus() {
   kubectl rollout restart deployment prometheus -n winterfell-o11y
 }
 
+recreate_grafana() {
+  timeout 3 kubectl delete pvc grafana-pvc -n winterfell-o11y || true
+  sleep 3
+  kubectl patch pvc grafana-pvc -p '{"metadata":{"finalizers":null}}' -n winterfell-o11y
+  kubectl apply -f kubernetes-files/o11y/grafana/grafana-pvc.yaml
+  kubectl rollout restart deployment grafana -n winterfell-o11y
+}
+
 destroy_k3d_cluster() {
   k3d cluster delete winterfell
 }
