@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kube-state-metrics
+  namespace: winterfell-o11y
+  labels:
+    app.kubernetes.io/name: kube-state-metrics
+spec:
+  ports:
+    - name: http-metrics
+      port: 8080
+      targetPort: http-metrics
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: kube-state-metrics
