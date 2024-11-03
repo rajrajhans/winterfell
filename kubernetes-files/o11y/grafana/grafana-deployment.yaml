@@ -60,6 +60,18 @@ spec:
               name: dashboards-config
             - mountPath: /var/lib/grafana/dashboards
               name: dashboards-data
+            - mountPath: /var/lib/grafana/dashboards/k8s-addons-prometheus
+              name: k8s-addons-prometheus
+            - mountPath: /var/lib/grafana/dashboards/k8s-addons-trivy-operator
+              name: k8s-addons-trivy-operator
+            - mountPath: /var/lib/grafana/dashboards/k8s-system-api-server
+              name: k8s-system-api-server
+            - mountPath: /var/lib/grafana/dashboards/k8s-system-coredns
+              name: k8s-system-coredns
+            - mountPath: /var/lib/grafana/dashboards/k8s-views-namespaces
+              name: k8s-views-namespaces
+            - mountPath: /var/lib/grafana/dashboards/k8s-views-pods
+              name: k8s-views-pods
       volumes:
         - name: grafana-pv
           persistentVolumeClaim:
@@ -73,3 +85,21 @@ spec:
         - name: dashboards-data
           configMap:
             name: grafana-k8s-dashboards
+        - name: k8s-addons-prometheus
+          configMap:
+            name: dashboards-k8s-addons-prometheus
+        - name: k8s-addons-trivy-operator
+          configMap:
+            name: dashboards-k8s-addons-trivy-operator
+        - name: k8s-system-api-server
+          configMap:
+            name: dashboards-k8s-system-api-server
+        - name: k8s-system-coredns
+          configMap:
+            name: dashboards-k8s-system-coredns
+        - name: k8s-views-namespaces
+          configMap:
+            name: dashboards-k8s-views-namespaces
+        - name: k8s-views-pods
+          configMap:
+            name: dashboards-k8s-views-pods
