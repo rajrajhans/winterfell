@@ -22,18 +22,21 @@ apply_matching_files() {
   local pattern=$1
   find "./kubernetes-files" -type f -wholename "*$pattern" | sort | while read -r file; do
     echo "Applying $file..."
-    kubectl apply -f "$file"
-
-    # check if the apply was successful
-    if [ $? -eq 0 ]; then
-      echo "✅ Successfully applied $file"
+    # run kubectl apply and capture both output and status
+    if output=$(kubectl apply -f "$file"); then
+      echo "$output"
+      if echo "$output" | grep -q "unchanged"; then
+        echo "✅ No changes needed for $file"
+      else
+        echo "✅ Successfully applied changes to $file"
+        sleep 2
+      fi
     else
+      echo "$output"
       echo "❌ Failed to apply $file"
       exit 1
     fi
-
-    # wait a bit to ensure resources are created
-    sleep 2
+    echo ""
   done
 }
 
